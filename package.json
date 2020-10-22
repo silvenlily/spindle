@@ -1,0 +1,22 @@
+{
+  "name": "spindle",
+  "version": "1.0.0",
+  "description": "A discord bot used to manage channels.",
+  "main": "Spindle.js",
+  "dependencies": {
+    "eris": "^0.13.3",
+    "pg": "^8.4.1"
+  },
+  "devDependencies": {},
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/silvenlily/spindle.git"
+  },
+  "author": "silverlily",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/silvenlily/spindle/issues"
+  },
+  "homepage": "https://github.com/silvenlily/spindle#readme"
+}
