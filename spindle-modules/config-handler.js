@@ -1,6 +1,6 @@
 const fs = require('fs')
 
-const defaultTokens = {configVersion:1,discord:"place your discord bot token here."}
+const defaultTokens = {configVersion:1,discord:"place your discord bot token here.",database:"place your postGres database url here."}
 const defaultConfig = {configVersion:1,commandChar:"|"}
 
 //maybe at some point make this async? not sure if its worth the time investment given that the code only runs at startup
@@ -10,13 +10,18 @@ function fetchConfig(){
   if(fs.existsSync(path)){
     console.log('config file found');
     let config = fs.readFileSync(path,'utf8');
-    return JSON.parse(config);
+    try {
+            return JSON.parse(config);
+        } catch (err) {
+            console.log('*************************************************************\n***** invalid json in config file, using default config *****\n*************************************************************')
+            return defaultConfig;
+        }
   } else {
     console.log('config file not found, generating new config file')
     let data = JSON.stringify(defaultConfig, null, 2);
     fs.writeFileSync(path,data)
     let config = fs.readFileSync(path,'utf8');
-    return JSON.parse(config);
+    return defaultConfig;
   }
 }
 
@@ -25,7 +30,12 @@ function fetchTokens(){
   if(fs.existsSync(path)){
     console.log('tokens file found')
     let tokens = fs.readFileSync(path,'utf8')
-    return JSON.parse(tokens)
+    try {
+            return JSON.parse(tokens);
+        } catch (err) {
+            console.log('*************************************************************\n***** invalid json in tokens file, using default config *****\n*************************************************************')
+            return defaultTokens;
+        }
   } else {
     console.log('tokens file not found, generating new tokens file')
     let data = JSON.stringify(defaultTokens, null, 2);
