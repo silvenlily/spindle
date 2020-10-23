@@ -22,8 +22,14 @@ function enterVoice(newChannel,user,guildCashe){
         }
       }
     });
-    textChannels.editPermission(user.id,1024,0,'member')
     console.log('linked channels: ' + textChannels)
+    if(Array.isArray(textChannels)){
+      for (var i = 0; i < textChannels.length; i++) {
+        textChannels[i].editPermission(user.id,1024,0,'member')
+      }
+    } else {
+      textChannels.editPermission(user.id,1024,0,'member')
+    }
   }
 }
 
