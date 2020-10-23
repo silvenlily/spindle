@@ -13,28 +13,15 @@ async function enterVoice(newChannel,user,guildCashe){
   console.log('user ' + user.id + ' joined channel ' + newChannel.id)
   if(guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']]){
     console.log('new channel a is linked channel')
-    if((guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']]).length = 1){
-      let textChannels = newChannel.guild.channels.find( (item) => {
-        for (var i = 0; i < (guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']]).length; i++) {
-          if(guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']][i] === item){
-            return true;
-          }
-        }
-      });
-      textChannels.editPermission(user.id,1024,0,'member')
-      } else {
-        var textChannels = newChannel.guild.channels.find( (item) => {
-          for (var i = 0; i < guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']].length; i++) {
-            console.log('checking: ' + guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']][i])
-            if (guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']][i] = item.id){
-              return true
-            }
-          }
-        });
-        for (var i = 0; i < textChannels.length; i++) {
-          textChannels[i].editPermission(user.id,1024,0,'member')
+    let textChannels = newChannel.guild.channels.find((item) => {
+      console.log("testing: " + item)
+      for (var i = 0; i < (guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']]).length; i++) {
+        if(guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']][i] === item){
+          return true;
         }
       }
+    });
+    textChannels.editPermission(user.id,1024,0,'member')
     console.log('linked channels: ' + textChannels)
   }
 }
