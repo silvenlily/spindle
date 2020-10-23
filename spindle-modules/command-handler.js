@@ -32,14 +32,14 @@ async function handler(bot,msg,guildCashe,db,config){
           console.log('cmd: update guild')
           break;
         case 'debug':
-          debugManager(msg,guildCashe)
+          debugManager(bot,msg,guildCashe)
           break;
       }
     }
   }
 }
 
-async function debugManager(msg,guildCashe){
+async function debugManager(bot,msg,guildCashe){
   if(msg.author.id = '229331045726552066'){
     bot.createMessage('guildCashe: ' + guildCashe)
   }
