@@ -20,7 +20,7 @@ async function enterVoice(newChannel,user,guildCashe){
             return true;
           }
         }
-      }});
+      });
       textChannels.editPermission(user.id,1024,0,'member')
       } else {
         var textChannels = newChannel.guild.channels.find( (item) => {
@@ -49,7 +49,7 @@ async function exitVoice(oldChannel,user,guildCashe){
           return true;
         }
       }
-    }});
+    });
     console.log('linked channels: ' + textChannels)
     if(Array.isArray(textChannels)){
       for (var i = 0; i < textChannels.length; i++) {
