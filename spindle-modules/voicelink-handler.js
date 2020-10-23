@@ -75,10 +75,15 @@ async function addVoiceLink(args,msg,guildCashe,bot,db,maxChannels){
       let voiceChannel = member.voiceState.channelID
       let textChannel = msg.channel.id
       console.log("linking voice channel: "+voiceChannel+" to text channel: "+textChannel)
-      if(Array.isArray(guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel])){
+      if(guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel]){
         if((guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel]).length <= maxChannels){
-          (guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel]).push(textChannel)
-          bot.createMessage(msg.channel.id,"Linked text channel with id of "+textChannel+" to voice channel with id of "+voiceChannel);
+          if(Array.isArray(guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel])){}
+            (guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel]).push(textChannel)
+            bot.createMessage(msg.channel.id,"Linked text channel with id of "+textChannel+" to voice channel with id of "+voiceChannel);
+          } else {
+            guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel][0] = guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel]
+            guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel][1] = textChannel
+          }
         } else {
           console.log('currently linked channels: ' + (guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel]).length)
           bot.createMessage(msg.channel.id,"Unable to link this channel. You have already linked the maximum number of channels linked to that voice channel.");
@@ -93,7 +98,7 @@ async function addVoiceLink(args,msg,guildCashe,bot,db,maxChannels){
       console.log("guild id: " + guild.id +'\nguild cashe: ' + JSON.stringify(guildCashe[guild['id']]))
       db.query('UPDATE servers SET settings = $1 WHERE id = ($2)',[JSON.stringify(guildCashe[guild['id']]),guild.id])
     } else {
-      bot.createMessage(msg.channel.id,"You must be in a voice channel that I can see to be able to link channels.");
+      bot.createMessage(msg.channel.id,"You must be in a voice channel that I have permission to see to be able to link channels.");
     }
   }
 }
