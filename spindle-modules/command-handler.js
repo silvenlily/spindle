@@ -15,7 +15,7 @@ async function handler(bot,msg,guildCashe,db,config){
       switch (command) {
         case 'help':
           console.log('cmd: help')
-          bot.createMessage(msg.channel.id,"Join a voice channel and use **"+guildCashe[msg['guildID']]['prefix'] + 'link** in the channel you wish to link! The bot must have the ability to Manage Permissions for the text channel you link.\n \n Set the channel permissions to the permissions you want users to have in that channel, except with **View Channel** disabled. When a user joins the linked voice channel it will automaticly add a permission overwride for that user to view the channel, then remove that overwride when they leave. You can remove a channel link by following the same process used to create one. **You can only use the link command if you have the admin permission.**\n \nYou can set your servers prefix using [coming soon]')
+          bot.createMessage(msg.channel.id,"Join a voice channel and use **"+guildCashe[msg['guildID']]['prefix'] + 'link** in the channel you wish to link! The bot must have the ability to Manage Permissions for the text channel you link.\n \n Set the channel permissions to the permissions you want users to have in that channel, except with **View Channel** disabled. When a user joins the linked voice channel it will automaticly add a permission overwride for that user to view the channel, then remove that overwride when they leave. You can remove a channel link by following the same process used to create one. **You can only use the link command if you have the Manage Channels permission.**\n \nYou can set your servers prefix using [coming soon]')
           break;
         case 'link':
           console.log('cmd: link')
@@ -37,10 +37,12 @@ async function handler(bot,msg,guildCashe,db,config){
 }
 
 async function updateGuildCashe(bot,msg,guildCashe){
-  guildCashe[msg.channel.guild] = voiceLink.defaultServerConfig
-  bot.createMessage(msg.channel.id,"Updated and reset your servers settings")
+  let member = msg.channel.guild.fetchMembers({'userIDs':msg.author.id});
+  member = (await member)[0];
+  if(member.permission.has('manageChannels') || member.id){
+    guildCashe[msg.channel.guild] = voiceLink.defaultServerConfig
+    bot.createMessage(msg.channel.id,"Updated and reset your servers settings")
+  }
 }
-
-
 
 exports.handler = handler;
