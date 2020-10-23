@@ -24,6 +24,7 @@ async function enterVoice(newChannel,user,guildCashe){
         console.log('test2')
         var textChannels = await newChannel.guild.channels.find( (item) => {
           for (var i = 0; i < guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']].length; i++) {
+            console.log('checking: ' + guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']][i] = item.id)
             if (guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']][i] = item.id){
               return true
             }
@@ -50,11 +51,9 @@ async function exitVoice(oldChannel,user,guildCashe){
     console.log('linked channels: ' + textChannels)
     if(Array.isArray(textChannels)){
       for (var i = 0; i < textChannels.length; i++) {
-        console.log('test1: ' + textChannels[i])
         textChannels[i].deletePermission(user.id)
       }
     } else {
-      console.log('test2: ' + textChannels)
       textChannels.deletePermission(user.id)
     }
   }
