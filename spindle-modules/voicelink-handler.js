@@ -9,7 +9,7 @@ async function switchVoice(oldChannel,newChannel,user,guildCashe){
   exitVoice(oldChannel,user,guildCashe)
 }
 
-async function enterVoice(newChannel,user,guildCashe){
+function enterVoice(newChannel,user,guildCashe){
   console.log('user ' + user.id + ' joined channel ' + newChannel.id)
   if(guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']]){
     console.log('new channel a is linked channel')
