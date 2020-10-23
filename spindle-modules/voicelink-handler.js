@@ -21,7 +21,7 @@ async function enterVoice(newChannel,user,guildCashe){
       } else {
         let textChannels = await newChannel.guild.channels.find( (item) => {
           for (var i = 0; i < guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']].length; i++) {
-            if (guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']][i] = item.id{
+            if (guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']][i] = item.id){
               return true
             }
           }
