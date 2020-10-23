@@ -19,7 +19,7 @@ async function enterVoice(newChannel,user,guildCashe){
       } else {
         return false;
       }});
-    console.log('linked channels: ' + textChannel)
+    console.log('linked channels: ' + textChannels)
     if(Array.isArray(textChannel)){
       for (var i = 0; i < textChannels.length; i++) {
         textChannels[i].editPermission(user.id,1024,0,'member')
