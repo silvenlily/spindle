@@ -14,15 +14,16 @@ async function enterVoice(newChannel,user,guildCashe){
   if(guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']]){
     console.log('new channel a is linked channel')
     if((guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']]).length = 1){
-      console.log('test1')
-      let textChannels = await newChannel.guild.channels.find( (item) => {
-        if(guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']][item['id']]){
-          return true;
-        }});
+      let textChannels = newChannel.guild.channels.find( (item) => {
+        for (var i = 0; i < (guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']][item['id']]).length; i++) {
+          if(guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']][item['id']][i] === item){
+            return true;
+          }
+        }
+      }});
       textChannels.editPermission(user.id,1024,0,'member')
       } else {
-        console.log('test2')
-        var textChannels = await newChannel.guild.channels.find( (item) => {
+        var textChannels = newChannel.guild.channels.find( (item) => {
           for (var i = 0; i < guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']].length; i++) {
             console.log('checking: ' + guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']][i])
             if (guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']][i] = item.id){
@@ -42,12 +43,13 @@ async function exitVoice(oldChannel,user,guildCashe){
   console.log('user ' + user.id + ' left channel ' + oldChannel.id)
   if(guildCashe[oldChannel['guild']['id']]['linkedChannels']['channels'][oldChannel['id']]){
     console.log('old channel a is linked channel')
-    let textChannels = await oldChannel.guild.channels.find( (item) => {
-      if(guildCashe[oldChannel['guild']['id']]['linkedChannels']['channels'][oldChannel['id']][item['id']]){
-        return true;
-      } else {
-        return false;
-      }});
+    let textChannels = oldChannel.guild.channels.find( (item) => {
+      for (var i = 0; i < (guildCashe[oldChannel['guild']['id']]['linkedChannels']['channels'][oldChannel['id']][item['id']]).length; i++) {
+        if(guildCashe[oldChannel['guild']['id']]['linkedChannels']['channels'][oldChannel['id']][item['id']][i] === item){
+          return true;
+        }
+      }
+    }});
     console.log('linked channels: ' + textChannels)
     if(Array.isArray(textChannels)){
       for (var i = 0; i < textChannels.length; i++) {
