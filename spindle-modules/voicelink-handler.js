@@ -19,6 +19,7 @@ async function enterVoice(newChannel,user,guildCashe){
         if(guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']][item['id']]){
           return true;
         }});
+      textChannels.editPermission(user.id,1024,0,'member')
       } else {
         console.log('test2')
         let textChannels = await newChannel.guild.channels.find( (item) => {
@@ -28,15 +29,11 @@ async function enterVoice(newChannel,user,guildCashe){
             }
           }
         });
+        for (var i = 0; i < textChannels.length; i++) {
+          textChannels[i].editPermission(user.id,1024,0,'member')
+        }
       }
     console.log('linked channels: ' + textChannels)
-    if(Array.isArray(textChannels)){
-      for (var i = 0; i < textChannels.length; i++) {
-        textChannels[i].editPermission(user.id,1024,0,'member')
-      }
-    } else {
-      textChannels.editPermission(user.id,1024,0,'member')
-    }
   }
 }
 
