@@ -3,10 +3,7 @@ const voiceLink = require('./voicelink-handler.js')
 
 async function handler(bot,msg,guildCashe,db,config){
   if(msg.channel.type === 0){
-    console.log('prefix: '+guildCashe[msg['guildID']]['prefix'])
     if(msg.content.substring(0,(guildCashe[msg['guildID']]['prefix']).length) === guildCashe[msg['guildID']]['prefix']) {
-      console.log('command: '+msg.content)
-
       let args = msg.content.substring((guildCashe[msg['guildID']]['prefix']).length)
       if(args.includes(" ")) {
         args = args.split(" ",8);

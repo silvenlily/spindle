@@ -79,7 +79,7 @@ async function addVoiceLink(args,msg,guildCashe,bot,db,maxChannels){
           if(Array.isArray(guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel])){
             if((guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel]).length <= maxChannels){
               (guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel]).push(textChannel)
-              bot.createMessage(msg.channel.id,"Linked text channel with id of "+textChannel+" to voice channel with id of "+voiceChannel);
+              bot.createMessage(msg.channel.id,"Linked additional text channel with id of "+textChannel+" to voice channel with id of "+voiceChannel);
             } else {
               console.log('currently linked channels: ' + (guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel]).length)
               bot.createMessage(msg.channel.id,"Unable to link this channel. You have already linked the maximum number of channels linked to that voice channel.");
@@ -87,6 +87,7 @@ async function addVoiceLink(args,msg,guildCashe,bot,db,maxChannels){
           } else {
             guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel][0] = guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel]
             guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel][1] = textChannel
+            bot.createMessage(msg.channel.id,"Linked additional text channel with id of "+textChannel+" to voice channel with id of "+voiceChannel);
           }
 
       } else {
