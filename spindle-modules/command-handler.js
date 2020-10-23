@@ -38,6 +38,7 @@ async function handler(bot,msg,guildCashe,db,config){
 
 async function updateGuildCashe(msg,guildCashe){
   guildCashe[msg.channel.guild] = voiceLink.defaultServerConfig
+  bot.createMessage(msg.channel.id,"Updated and reset your servers settings")
 }
 
 
