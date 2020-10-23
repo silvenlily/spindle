@@ -6,3 +6,4 @@ You can add the bot to your server using: https://discord.com/oauth2/authorize?c
 
 Planned features: The ability to create temporary channels, and an api to allow other bots to automatically create and remove channels.
 
+dependencies:Eris (https://www.npmjs.com/package/eris) and pg (https://www.npmjs.com/package/pg)
