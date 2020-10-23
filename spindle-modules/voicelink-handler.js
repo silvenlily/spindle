@@ -43,9 +43,11 @@ async function exitVoice(oldChannel,user,guildCashe){
     console.log('linked channels: ' + textChannels)
     if(Array.isArray(textChannels)){
       for (var i = 0; i < textChannels.length; i++) {
+        console.log('test1: ' + textChannels[i])
         textChannels[i].deletePermission(user.id)
       }
     } else {
+      console.log('test1: ' + textChannels)
       textChannels.deletePermission(user.id)
     }
   }
