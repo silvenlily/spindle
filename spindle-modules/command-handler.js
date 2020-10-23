@@ -1,4 +1,4 @@
-
+const guildHandler = require('./guild-handler.js')
 const voiceLink = require('./voicelink-handler.js')
 
 async function handler(bot,msg,guildCashe,db,config){
@@ -50,7 +50,7 @@ async function updateGuildCashe(bot,msg,guildCashe){
   let member = msg.channel.guild.fetchMembers({'userIDs':msg.author.id});
   member = (await member)[0];
   if(member.permission.has('manageChannels') || member.id){
-    guildCashe[msg.channel.guild.id] = voiceLink.defaultServerConfig
+    guildCashe[msg.channel.guild.id] = guildHandler.defaultServerConfig
     bot.createMessage(msg.channel.id,"Updated and reset your servers settings")
   }
 }
