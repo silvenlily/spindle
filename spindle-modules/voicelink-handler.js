@@ -36,7 +36,6 @@ function exitVoice(oldChannel,user,guildCashe){
   if(guildCashe[oldChannel['guild']['id']]['linkedChannels']['channels'][oldChannel['id']]){
     console.log('old channel a is linked channel')
     let textChannels = oldChannel.guild.channels.filter((item) => {
-      console.log("testing: " + item)
       for (var i = 0; i < (guildCashe[oldChannel['guild']['id']]['linkedChannels']['channels'][oldChannel['id']]).length; i++) {
         if(item['id'] === guildCashe[oldChannel['guild']['id']]['linkedChannels']['channels'][oldChannel['id']][i]){
           return true;
