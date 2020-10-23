@@ -28,7 +28,7 @@ async function handler(bot,msg,guildCashe,db,config){
           console.log('cmd: prefix')
           break;
         case 'update':
-          updateGuildCashe(msg,guildCashe)
+          updateGuildCashe(bot,msg,guildCashe)
           console.log('cmd: update guild')
           break;
       }
@@ -36,7 +36,7 @@ async function handler(bot,msg,guildCashe,db,config){
   }
 }
 
-async function updateGuildCashe(msg,guildCashe){
+async function updateGuildCashe(bot,msg,guildCashe){
   guildCashe[msg.channel.guild] = voiceLink.defaultServerConfig
   bot.createMessage(msg.channel.id,"Updated and reset your servers settings")
 }
