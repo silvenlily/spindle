@@ -77,7 +77,7 @@ async function addVoiceLink(args,msg,guildCashe,bot,db,maxChannels){
       console.log("linking voice channel: "+voiceChannel+" to text channel: "+textChannel)
       if(guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel]){
         if((guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel]).length <= maxChannels){
-          if(Array.isArray(guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel])){}
+          if(Array.isArray(guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel])){
             (guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel]).push(textChannel)
             bot.createMessage(msg.channel.id,"Linked text channel with id of "+textChannel+" to voice channel with id of "+voiceChannel);
           } else {
