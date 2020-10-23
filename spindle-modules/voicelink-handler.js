@@ -18,6 +18,7 @@ function enterVoice(newChannel,user,guildCashe){
       for (var i = 0; i < (guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']]).length; i++) {
         if(guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']][i] === item){
           return true;
+          console.log("found channel: "+item)
         }
       }
     });
