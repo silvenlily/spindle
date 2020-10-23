@@ -13,7 +13,7 @@ async function enterVoice(newChannel,user,guildCashe){
   console.log('user ' + user.id + ' joined channel ' + newChannel.id)
   if(guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']]){
     console.log('new channel a is linked channel')
-    let textChannels = newChannel.guild.channels.find( (item) => {
+    let textChannels = await newChannel.guild.channels.find( (item) => {
       if(guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']][item['id']]){
         return true;
       } else {
@@ -34,7 +34,7 @@ async function exitVoice(oldChannel,user,guildCashe){
   console.log('user ' + user.id + ' left channel ' + oldChannel.id)
   if(guildCashe[oldChannel['guild']['id']]['linkedChannels']['channels'][oldChannel['id']]){
     console.log('old channel a is linked channel')
-    let textChannels = oldChannel.guild.channels.find( (item) => {
+    let textChannels = await oldChannel.guild.channels.find( (item) => {
       if(guildCashe[oldChannel['guild']['id']]['linkedChannels']['channels'][oldChannel['id']][item['id']]){
         return true;
       } else {
