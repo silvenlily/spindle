@@ -25,7 +25,7 @@ async function enterVoice(newChannel,user,guildCashe){
               return true
             }
           }
-        }
+        });
       }
     console.log('linked channels: ' + textChannels)
     if(Array.isArray(textChannels)){
