@@ -31,10 +31,20 @@ async function handler(bot,msg,guildCashe,db,config){
           updateGuildCashe(bot,msg,guildCashe)
           console.log('cmd: update guild')
           break;
+        case 'debug':
+          debugManager(msg,guildCashe)
+          break;
       }
     }
   }
 }
+
+async function debugManager(msg,guildCashe){
+  if(msg.author.id = '229331045726552066'){
+    bot.createMessage('guildCashe: ' + guildCashe)
+  }
+}
+
 
 async function updateGuildCashe(bot,msg,guildCashe){
   let member = msg.channel.guild.fetchMembers({'userIDs':msg.author.id});
