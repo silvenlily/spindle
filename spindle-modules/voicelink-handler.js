@@ -70,10 +70,12 @@ async function addVoiceLink(args,msg,guildCashe,bot,db,maxChannels){
       let voiceChannel = member.voiceState.channelID
       let textChannel = msg.channel.id
       console.log("linking voice channel: "+voiceChannel+" to text channel: "+textChannel)
+      console.log("test1: "+(guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel]))
       if(guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel]){
           if(Array.isArray(guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel])){
             if((guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel]).length <= maxChannels){
               (guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel]).push(textChannel)
+              console.log("pushed text channel to cashe")
               bot.createMessage(msg.channel.id,"Linked additional text channel with id of "+textChannel+" to voice channel with id of "+voiceChannel);
             } else {
               console.log('currently linked channels: ' + (guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel]).length)
