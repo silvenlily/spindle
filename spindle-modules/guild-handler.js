@@ -9,4 +9,4 @@ async function newGuild(guild,db,guildCashe,prefix){
 }
 
 exports.newGuild = newGuild;
-exports.defaultServerConfig = defaultServerConfig
+exports.defaultServerConfig = defaultServerConfig;
