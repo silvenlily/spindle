@@ -1,7 +1,7 @@
 const fs = require('fs')
 
 const defaultTokens = {configVersion:1,discord:"place your discord bot token here.",database:"place your postGres database url here."}
-const defaultConfig = {configVersion:1,commandChar:"|"}
+const defaultConfig = {configVersion:1,commandChar:"|",maxLinkedChannels:2}
 
 //maybe at some point make this async? not sure if its worth the time investment given that the code only runs at startup
 

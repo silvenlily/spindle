@@ -62,7 +62,7 @@ bot.on("guildCreate", async (guild) => { //adds a new guild to the cashe and sto
 
 bot.on("messageCreate", async (msg) => {
   console.log('ctype:' + msg.channel.type)
-  commandHandler.handler(bot,msg,guildCashe,db)
+  commandHandler.handler(bot,msg,guildCashe,db,config)
 });
 
 

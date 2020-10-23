@@ -1,4 +1,7 @@
-async function handler(bot,msg,guildCashe,db){
+
+const voiceLink = require('./spindle-modules/voicelink-handler.js')
+
+async function handler(bot,msg,guildCashe,db,config){
   if(msg.channel.type === 0){
     console.log('prefix: '+guildCashe[msg['guildID']]['prefix'])
     if(msg.content.substring(0,(guildCashe[msg['guildID']]['prefix']).length) === guildCashe[msg['guildID']]['prefix']) {
@@ -19,35 +22,19 @@ async function handler(bot,msg,guildCashe,db){
           break;
         case 'link':
           console.log('cmd: link')
-          addVoiceLink(args,msg,guildCashe,bot,db)
+          voiceLink.addVoiceLink(args,msg,guildCashe,bot,db,config['maxLinkedChannels'])
           break;
+        case 'unlink':
+          console.log('cmd: unlink')
+          voiceLink.removeVoiceLink(args,msg,guildCashe,bot,db)
         case 'prefix':
           console.log('cmd: prefix')
-
+          break;
       }
     }
   }
 }
 
-async function addVoiceLink(args,msg,guildCashe,bot,db){
-  let options = {'userIDs':msg.author.id}
-  let guild = msg.channel.guild
-  let member = guild.fetchMembers(options);
-  member = (await member)[0];
-  if(member.permission.has('manageChannels')){
-    if(member.voiceState.channelID != null){
-      let voiceChannel = member.voiceState.channelID
-      let textChannel = msg.channel.id
-      console.log("linking channel: "+voiceChannel+" to: "+textChannel)
-      guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel] = textChannel
-      if(!guildCashe[guild['id']]['linkedChannels']['enabled']){
-        guildCashe[guild['id']]['linkedChannels']['enabled'] = true
-      }
-      console.log("guild id: " + guild.id +'\nguild cashe: ' + JSON.stringify(guildCashe[guild['id']]))
-      db.query('UPDATE servers SET settings = $1 WHERE id = ($2)',[JSON.stringify(guildCashe[guild['id']]),guild.id])
-      bot.createMessage(msg.channel.id,"Linked text channel with id of "+textChannel+" to voice channel with id of "+voiceChannel)
-    }
-  }
-}
+
 
 exports.handler = handler;
