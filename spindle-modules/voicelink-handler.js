@@ -50,7 +50,7 @@ async function exitVoice(oldChannel,user,guildCashe){
         }});
         console.log('linked channel: ' + textChannel.name)
         for (var i = 0; i < textChannels.length; i++) {
-          textChannels[i].editPermission(user.id,1024,0,'member')
+          textChannels[i].deletePermission(user.id)
         }
     } else {
       let textChannel = oldChannel.guild.channels.find( (item) => {
