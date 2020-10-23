@@ -26,7 +26,7 @@ function enterVoice(newChannel,user,guildCashe){
   }
 }
 
-async function exitVoice(oldChannel,user,guildCashe){
+function exitVoice(oldChannel,user,guildCashe){
   console.log('user ' + user.id + ' left channel ' + oldChannel.id)
   if(guildCashe[oldChannel['guild']['id']]['linkedChannels']['channels'][oldChannel['id']]){
     console.log('old channel a is linked channel')
