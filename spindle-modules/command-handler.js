@@ -50,7 +50,7 @@ async function updateGuildCashe(bot,msg,guildCashe){
   let member = msg.channel.guild.fetchMembers({'userIDs':msg.author.id});
   member = (await member)[0];
   if(member.permission.has('manageChannels') || member.id){
-    guildCashe[msg.guildID] = json.parse(guildHandler.defaultServerConfig)
+    guildCashe[msg.guildID] = JSON.parse(guildHandler.defaultServerConfig)
     console.log(guildHandler.defaultServerConfig)
     bot.createMessage(msg.channel.id,"Updated and reset your servers settings")
   }
