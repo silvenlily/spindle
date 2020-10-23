@@ -20,7 +20,7 @@ async function enterVoice(newChannel,user,guildCashe){
         return false;
       }});
     console.log('linked channels: ' + textChannels)
-    if(Array.isArray(textChannel)){
+    if(Array.isArray(textChannels)){
       for (var i = 0; i < textChannels.length; i++) {
         textChannels[i].editPermission(user.id,1024,0,'member')
       }
@@ -41,7 +41,7 @@ async function exitVoice(oldChannel,user,guildCashe){
         return false;
       }});
     console.log('linked channels: ' + textChannels)
-    if(Array.isArray(textChannel)){
+    if(Array.isArray(textChannels)){
       for (var i = 0; i < textChannels.length; i++) {
         textChannels[i].deletePermission(user.id)
       }
