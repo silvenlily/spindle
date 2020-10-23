@@ -10,7 +10,7 @@ async function switchVoice(oldChannel,newChannel,user,guildCashe){
 }
 
 async function enterVoice(newChannel,user,guildCashe){
-  console.log('user ' + user.username + ' joined channel ' + newChannel.name)
+  console.log('user ' + user.id + ' joined channel ' + newChannel.id)
   if(guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']]){
     console.log('new channel a is linked channel')
     let textChannel = newChannel.guild.channels.find( (item) => {
@@ -25,7 +25,7 @@ async function enterVoice(newChannel,user,guildCashe){
 }
 
 async function exitVoice(oldChannel,user,guildCashe){
-  console.log('user ' + user.username + ' left channel ' + oldChannel.name)
+  console.log('user ' + user.id + ' left channel ' + oldChannel.id)
   if(guildCashe[oldChannel['guild']['id']]['linkedChannels']['channels'][oldChannel['id']]){
     console.log('old channel a is linked channel')
     let textChannel = oldChannel.guild.channels.find( (item) => {
