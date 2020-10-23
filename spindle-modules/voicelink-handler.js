@@ -22,7 +22,7 @@ async function enterVoice(newChannel,user,guildCashe){
       textChannels.editPermission(user.id,1024,0,'member')
       } else {
         console.log('test2')
-        let textChannels = await newChannel.guild.channels.find( (item) => {
+        var textChannels = await newChannel.guild.channels.find( (item) => {
           for (var i = 0; i < guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']].length; i++) {
             if (guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']][i] = item.id){
               return true
