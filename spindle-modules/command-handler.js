@@ -27,9 +27,17 @@ async function handler(bot,msg,guildCashe,db,config){
         case 'prefix':
           console.log('cmd: prefix')
           break;
+        case 'update':
+          updateGuildCashe(msg,guildCashe)
+          console.log('cmd: update guild')
+          break;
       }
     }
   }
+}
+
+async function updateGuildCashe(msg,guildCashe){
+  guildCashe[msg.channel.guild] = voiceLink.defaultServerConfig
 }
 
 
