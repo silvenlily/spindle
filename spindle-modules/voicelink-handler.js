@@ -47,7 +47,7 @@ async function exitVoice(oldChannel,user,guildCashe){
         textChannels[i].deletePermission(user.id)
       }
     } else {
-      console.log('test1: ' + textChannels)
+      console.log('test2: ' + textChannels)
       textChannels.deletePermission(user.id)
     }
   }
