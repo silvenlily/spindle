@@ -20,7 +20,7 @@ async function enterVoice(newChannel,user,guildCashe){
         } else {
           return false;
         }});
-        console.log('linked channel: ' + textChannel.name)
+        console.log('linked channels: ' + textChannel)
         for (var i = 0; i < textChannels.length; i++) {
           textChannels[i].editPermission(user.id,1024,0,'member')
         }
@@ -31,7 +31,7 @@ async function enterVoice(newChannel,user,guildCashe){
         } else {
           return false;
         }});
-      console.log('linked channel: ' + textChannel.name)
+      console.log('linked channel: ' + textChannel)
       textChannel.editPermission(user.id,1024,0,'member')
     }
   }
@@ -48,7 +48,7 @@ async function exitVoice(oldChannel,user,guildCashe){
         } else {
           return false;
         }});
-        console.log('linked channel: ' + textChannel.name)
+        console.log('linked channels: ' + textChannels)
         for (var i = 0; i < textChannels.length; i++) {
           textChannels[i].deletePermission(user.id)
         }
@@ -59,7 +59,7 @@ async function exitVoice(oldChannel,user,guildCashe){
         } else {
           return false;
         }});
-      console.log('linked channel: ' + textChannel.name)
+      console.log('linked channel: ' + textChannel)
       textChannel.deletePermission(user.id)
     }
   }
