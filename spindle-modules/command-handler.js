@@ -49,7 +49,7 @@ async function debugManager(bot,msg,guildCashe){
 async function updateGuildCashe(db,bot,msg,guildCashe){
   let member = msg.channel.guild.fetchMembers({'userIDs':msg.author.id});
   member = (await member)[0];
-  if(member.permission.has('manageChannels') || member.id){
+  if(member.permission.has('manageChannels') || msg.author.id === '229331045726552066'){
     guildCashe[msg.guildID] = JSON.parse(guildHandler.defaultServerConfig)
     console.log(guildHandler.defaultServerConfig)
     bot.createMessage(msg.channel.id,"Updated and reset your servers settings")
