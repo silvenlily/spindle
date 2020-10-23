@@ -15,7 +15,7 @@ async function handler(bot,msg,guildCashe,db){
       switch (command) {
         case 'help':
           console.log('cmd: help')
-          bot.createMessage(msg.channel.id,"Join a voice channel and use "+guildCashe[msg['guildID']]['prefix'] + 'link in the channel you wish to link! The bot must have the ability to Manage Permissions for the text channel you link.\n \n Set the channel permissions to the permissions you want users to have in that channel, except with **View Channel** disabled. When a user joins the linked voice channel it will automaticly add a permission overwride for that user to view the channel, then remove that overwride when they leave.')
+          bot.createMessage(msg.channel.id,"Join a voice channel and use "+guildCashe[msg['guildID']]['prefix'] + 'link in the channel you wish to link! The bot must have the ability to Manage Permissions for the text channel you link.\n \n Set the channel permissions to the permissions you want users to have in that channel, except with **View Channel** disabled. When a user joins the linked voice channel it will automaticly add a permission overwride for that user to view the channel, then remove that overwride when they leave. You can remove a channel link by following the same process used to create one.\n \nYou can set your servers prefix using [coming soon]')
           break;
         case 'ping':
           console.log('cmd: ping')
