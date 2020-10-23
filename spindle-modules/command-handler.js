@@ -41,7 +41,7 @@ async function handler(bot,msg,guildCashe,db,config){
 
 async function debugManager(bot,msg,guildCashe){
   if(msg.author.id = '229331045726552066'){
-    bot.createMessage(msg.channel.id,'guildCashe: ' + guildCashe)
+    bot.createMessage(msg.channel.id,'guildCashe: ' + JSON.stringify(guildCashe))
   }
 }
 
