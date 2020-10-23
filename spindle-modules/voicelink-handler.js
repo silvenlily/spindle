@@ -14,13 +14,13 @@ async function enterVoice(newChannel,user,guildCashe){
   if(guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']]){
     console.log('new channel a is linked channel')
     if((guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']]).length = 1){
-      console.log(test1)
+      console.log('test1')
       let textChannels = await newChannel.guild.channels.find( (item) => {
         if(guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']][item['id']]){
           return true;
         }});
       } else {
-        console.log(test2)
+        console.log('test2')
         let textChannels = await newChannel.guild.channels.find( (item) => {
           for (var i = 0; i < guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']].length; i++) {
             if (guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']][i] = item.id){
