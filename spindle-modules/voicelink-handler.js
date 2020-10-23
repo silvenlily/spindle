@@ -13,12 +13,20 @@ async function enterVoice(newChannel,user,guildCashe){
   console.log('user ' + user.id + ' joined channel ' + newChannel.id)
   if(guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']]){
     console.log('new channel a is linked channel')
-    let textChannels = await newChannel.guild.channels.find( (item) => {
-      if(guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']][item['id']]){
-        return true;
+    if((guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']]).length = 1){
+      let textChannels = await newChannel.guild.channels.find( (item) => {
+        if(guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']][item['id']]){
+          return true;
+        }});
       } else {
-        return false;
-      }});
+        let textChannels = await newChannel.guild.channels.find( (item) => {
+          for (var i = 0; i < guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']].length; i++) {
+            if (guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']][i] = item.id{
+              return true
+            }
+          }
+        }
+      }
     console.log('linked channels: ' + textChannels)
     if(Array.isArray(textChannels)){
       for (var i = 0; i < textChannels.length; i++) {
