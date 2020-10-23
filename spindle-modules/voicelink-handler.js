@@ -16,9 +16,9 @@ function enterVoice(newChannel,user,guildCashe){
     let textChannels = newChannel.guild.channels.find((item) => {
       console.log("testing: " + item)
       for (var i = 0; i < (guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']]).length; i++) {
-        if(guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']][i] === item){
+        if(item['id'] === guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']][i]){
           return true;
-          console.log("found channel: "+item)
+          console.log("found channel: "+item['id'])
         }
       }
     });
