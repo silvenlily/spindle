@@ -7,6 +7,10 @@ const defaultConfig = {configVersion:1,commandChar:"|"}
 
 function fetchConfig(){
   let path = './config/config.json';
+  if(!fs.existsSync('./config')){
+    fs.mkdirSync('./config')
+  }
+
   if(fs.existsSync(path)){
     console.log('config file found');
     let config = fs.readFileSync(path,'utf8');

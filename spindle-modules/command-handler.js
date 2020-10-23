@@ -14,7 +14,7 @@ async function handler(bot,msg,guildCashe,db){
       switch (command) {
         case 'help':
           console.log('cmd: help')
-          bot.createMessage(msg.channel.id,"note to lily: add a help message later")
+          bot.createMessage(msg.channel.id,"Join a voice channel and use "+guildCashe[msg['guildID']]['prefix'] + "link in the channel you wish to link!")
           break;
         case 'ping':
           console.log('cmd: ping')
