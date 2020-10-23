@@ -53,7 +53,7 @@ async function updateGuildCashe(db,bot,msg,guildCashe){
     guildCashe[msg.guildID] = JSON.parse(guildHandler.defaultServerConfig)
     console.log(guildHandler.defaultServerConfig)
     bot.createMessage(msg.channel.id,"Updated and reset your servers settings")
-    db.query('UPDATE servers SET settings = $1 WHERE id = ($2)',[JSON.stringify(guildCashe[guild['id']]),msg.channel.guild])
+    db.query('UPDATE servers SET settings = $1 WHERE id = ($2)',[JSON.stringify(guildCashe[msg.guildID]),msg.guildID])
   }
 }
 
