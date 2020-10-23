@@ -1,5 +1,5 @@
 
-const voiceLink = require('./spindle-modules/voicelink-handler.js')
+const voiceLink = require('./voicelink-handler.js')
 
 async function handler(bot,msg,guildCashe,db,config){
   if(msg.channel.type === 0){
