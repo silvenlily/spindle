@@ -1,17 +1,23 @@
+
+//spindle modules
 const configHandler = require('./spindle-modules/config-handler.js');
-const menuHandler = require ('./spindle-modules/menu-handler.js');
-const commandHandler = require ('./spindle-modules/command-handler.js')
-const guildHandler = require ('./spindle-modules/guild-handler.js')
+const menuHandler = require('./spindle-modules/menu-handler.js');
+const commandHandler = require('./spindle-modules/command-handler.js')
+const guildHandler = require('./spindle-modules/guild-handler.js')
+const voiceLink = require('./spindle-modules/voicelink-handler.js')
 
 var guildCashe = {}
 var config = configHandler.fetchConfig();
 var tokens = configHandler.fetchTokens();
 
+//node modules
 let Eris = require('eris')
 let postGres = require('pg')
 
 let bot = new Eris(tokens.discord);
 let db = new postGres.Client(tokens.database)
+
+startup()
 
 function startup(){ //connects to postgres, fetches the guild cashe, and connects to discord
   if (tokens.discord === configHandler.defaultTokens.discord || !(tokens.discord)){
@@ -30,7 +36,6 @@ function startup(){ //connects to postgres, fetches the guild cashe, and connect
               console.log("error fetching guild cashe");
             } else {
               let remoteCashe = res.rows
-              console.log('result: ')
               for(let i=0; i<res.rows.length; i++){
                 guildCashe[remoteCashe[i]['id']] = remoteCashe[i]['settings']
               }
@@ -42,6 +47,7 @@ function startup(){ //connects to postgres, fetches the guild cashe, and connect
       });
     }
 }
+
 
 bot.on("ready", async () => {
   console.log("connected!\nready!");
@@ -55,7 +61,19 @@ bot.on("guildCreate", async (guild) => { //adds a new guild to the cashe and sto
 //bot.on("messageReactionAdd", async (msg, reaction, userID) => { /*place menu handler here*/ });
 
 bot.on("messageCreate", async (msg) => {
-  if(msg.content.substring(0,1) === config.commandChar) {
-    commandHandler.handler(bot,msg,config,guilds)
-  }
+  console.log('ctype:' + msg.channel.type)
+  commandHandler.handler(bot,msg,guildCashe,db)
+});
+
+
+bot.on("voiceChannelSwitch", async (member,newChannel,oldChannel) => {
+  voiceLink.switchVoice(oldChannel,newChannel,member,guildCashe)
+});
+
+bot.on("voiceChannelJoin", async (member,newChannel) => {
+  voiceLink.enterVoice(newChannel,member,guildCashe)
+});
+
+bot.on("voiceChannelLeave", async (member,oldChannel) => {
+  voiceLink.exitVoice(oldChannel,member,guildCashe)
 });
