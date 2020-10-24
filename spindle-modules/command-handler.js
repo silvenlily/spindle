@@ -27,10 +27,10 @@ async function handler(bot,msg,guildCashe,db,config){
         case 'prefix':
           console.log('cmd: prefix')
           break;
-        case 'update':
-          updateGuildCashe(db,bot,msg,guildCashe)
-          console.log('cmd: update guild')
-          break;
+        //case 'update':
+        //  updateGuildCashe(db,bot,msg,guildCashe)
+        //  console.log('cmd: update guild')
+        //  break;
         case 'debug':
           debugManager(bot,msg,guildCashe)
           break;
