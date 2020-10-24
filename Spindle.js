@@ -51,6 +51,8 @@ function startup(){ //connects to postgres, fetches the guild cashe, and connect
 
 bot.on("ready", async () => {
   console.log("connected!\nready!");
+  console.log("setting status")
+  bot.editStatus("online",{name:"for |help",type:3})
 });
 
 bot.on("guildCreate", async (guild) => { //adds a new guild to the cashe and storage when the bot joins a new guild
