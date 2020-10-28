@@ -6,6 +6,7 @@ async function syncVoiceChannels(){
 
 function switchVoice(oldChannel,newChannel,user,guildCashe){
   if(guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']] && guildCashe[oldChannel['guild']['id']]['linkedChannels']['channels'][oldChannel['id']]){
+    console.log("New and old channels are linked channels.")
     let newTextChannels = newChannel.guild.channels.filter((item) => {
       for (var i = 0; i < (guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']]).length; i++) {
         if(item['id'] === guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']][i]){
@@ -20,27 +21,30 @@ function switchVoice(oldChannel,newChannel,user,guildCashe){
         }
       }
     });
-    let a = newTextChannels.length
-    for (var c = 0; c < a; c++) {
-      let b = oldTextChannels.length
-      for (var d = 0; d < b; d++) {
-        if (oldTextChannels[d]['id'] === newTextChannels[c]['id']){
-          delete oldTextChannels[d]
-          delete newTextChannels[c]
-          break;
+
+
+    let filteredNewTextChannels = newTextChannels
+    let filteredOldTextChannels = oldTextChannels
+
+    for (var i = 0; i < newTextChannels.length; i++) {
+      for (var b = 0; b < oldTextChannels.length; b++) {
+        if (oldTextChannels[b] === newTextChannels[i]){
+          filteredNewTextChannels[i] = "none"
+          filteredOldTextChannels[b] = "none"
         }
       }
     }
 
+
     //remove permissions for old text channels
     if(Array.isArray(oldTextChannels)){
       for (var i = 0; i < oldTextChannels.length; i++) {
-        if(oldTextChannels[i]){
+        if(oldTextChannels[i] != "none"){
           oldTextChannels[i].deletePermission(user.id)
         }
       }
     } else {
-      if(oldTextChannels){
+      if(oldTextChannels != "none"){
         oldTextChannels.deletePermission(user.id)
       }
     }
@@ -48,12 +52,12 @@ function switchVoice(oldChannel,newChannel,user,guildCashe){
     //add permissions for allowed text channels
     if(Array.isArray(newTextChannels)){
       for (var i = 0; i < newTextChannels.length; i++) {
-        if(newTextChannels[i]){
+        if(newTextChannels[i] != "none"){
           newTextChannels[i].editPermission(user.id,1024,0,'member')
         }
       }
     } else {
-      if(newTextChannels){
+      if(newTextChannels != "none"){
         newTextChannels.editPermission(user.id,1024,0,'member')
       }
     }
