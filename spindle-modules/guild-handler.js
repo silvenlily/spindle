@@ -1,11 +1,10 @@
 const fs = require('fs')
-const path = './guild-cashe'
 const defaultServerConfig = '{"prefix":"|","linkedChannels":{"enabled":true,"channels":{}},"customChannels":{"enabled":false,"catagorys":{},"channels":{}}}'
 
 async function newGuild(guild,db,guildCashe,prefix){
-  console.log("adding new guild")
+  console.log('joined new guild: ' + guild['name'])
   db.query('INSERT INTO servers (id,settings) VALUES ($1,$2)',[guild['id'],JSON.parse(defaultServerConfig)])
-  return defaultServerConfig
+  guildCashe[guild['id']] = JSON.parse(defaultServerConfig)
 }
 
 exports.newGuild = newGuild;

@@ -56,8 +56,7 @@ bot.on("ready", async () => {
 });
 
 bot.on("guildCreate", async (guild) => { //adds a new guild to the cashe and storage when the bot joins a new guild
-  console.log('joined new guild: ' + guild['name'])
-  guildCashe[guild['id']] = guildHandler.newGuild(guild,db,guildCashe,config.commandChar);
+  guildHandler.newGuild(guild,db,guildCashe,config.commandChar);
 });
 
 //bot.on("messageReactionAdd", async (msg, reaction, userID) => { /*place menu handler here*/ });
