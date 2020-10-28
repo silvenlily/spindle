@@ -4,7 +4,7 @@ async function syncVoiceChannels(){
 
 }
 
-async function switchVoice(oldChannel,newChannel,user,guildCashe){
+function switchVoice(oldChannel,newChannel,user,guildCashe){
   if(guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']] && guildCashe[oldChannel['guild']['id']]['linkedChannels']['channels'][oldChannel['id']]){
     let newTextChannels = newChannel.guild.channels.filter((item) => {
       for (var i = 0; i < (guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']]).length; i++) {
@@ -44,7 +44,7 @@ async function switchVoice(oldChannel,newChannel,user,guildCashe){
         oldTextChannels.deletePermission(user.id)
       }
     }
-    
+
     //add permissions for allowed text channels
     if(Array.isArray(newTextChannels)){
       for (var i = 0; i < newTextChannels.length; i++) {
