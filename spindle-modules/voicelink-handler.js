@@ -5,8 +5,63 @@ async function syncVoiceChannels(){
 }
 
 async function switchVoice(oldChannel,newChannel,user,guildCashe){
-  exitVoice(oldChannel,user,guildCashe)
-  enterVoice(newChannel,user,guildCashe)
+  if(guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']] && guildCashe[oldChannel['guild']['id']]['linkedChannels']['channels'][oldChannel['id']]){
+    let newTextChannels = newChannel.guild.channels.filter((item) => {
+      for (var i = 0; i < (guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']]).length; i++) {
+        if(item['id'] === guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']][i]){
+          return true;
+        }
+      }
+    });
+    let oldTextChannels = oldChannel.guild.channels.filter((item) => {
+      for (var i = 0; i < (guildCashe[oldChannel['guild']['id']]['linkedChannels']['channels'][oldChannel['id']]).length; i++) {
+        if(item['id'] === guildCashe[oldChannel['guild']['id']]['linkedChannels']['channels'][oldChannel['id']][i]){
+          return true;
+        }
+      }
+    });
+    let a = newTextChannels.length
+    for (var c = 0; c < a; c++) {
+      let b = oldTextChannels.length
+      for (var d = 0; d < b; d++) {
+        if (oldTextChannels[d]['id'] === newTextChannels[c]['id']){
+          delete oldTextChannels[d]
+          delete newTextChannels[c]
+          break;
+        }
+      }
+    }
+
+    //remove permissions for old text channels
+    if(Array.isArray(oldTextChannels)){
+      for (var i = 0; i < oldTextChannels.length; i++) {
+        if(oldTextChannels[i]){
+          oldTextChannels[i].deletePermission(user.id)
+        }
+      }
+    } else {
+      if(oldTextChannels){
+        oldTextChannels.deletePermission(user.id)
+      }
+    }
+    
+    //add permissions for allowed text channels
+    if(Array.isArray(newTextChannels)){
+      for (var i = 0; i < newTextChannels.length; i++) {
+        if(newTextChannels[i]){
+          newTextChannels[i].editPermission(user.id,1024,0,'member')
+        }
+      }
+    } else {
+      if(newTextChannels){
+        newTextChannels.editPermission(user.id,1024,0,'member')
+      }
+    }
+  } else if(guildCashe[oldChannel['guild']['id']]['linkedChannels']['channels'][oldChannel['id']]){
+    exitVoice(oldChannel,user,guildCashe);
+  } else if(guildCashe[newChannel['guild']['id']]['linkedChannels']['channels'][newChannel['id']]){
+    enterVoice(newChannel,user,guildCashe);
+  }
 }
 
 function enterVoice(newChannel,user,guildCashe){
