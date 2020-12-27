@@ -52,19 +52,20 @@ function startup(){ //connects to postgres, fetches the guild cashe, and connect
 bot.on("ready", async () => {
   console.log("connected!\nready!");
   console.log("setting status")
-  bot.editStatus("online",{name:"for |help",type:3})
+  bot.editStatus("online",{name:"for |help"})
 });
 
 bot.on("guildCreate", async (guild) => { //adds a new guild to the cashe and storage when the bot joins a new guild
   guildHandler.newGuild(guild,db,guildCashe,config.commandChar);
 });
 
-//bot.on("messageReactionAdd", async (msg, reaction, userID) => { /*place menu handler here*/ });
+bot.on("messageReactionAdd", async (msg, reaction, userID) => {
+   /*place menu handler here*/
+});
 
 bot.on("messageCreate", async (msg) => {
   commandHandler.handler(bot,msg,guildCashe,db,config)
 });
-
 
 bot.on("voiceChannelSwitch", async (member,newChannel,oldChannel) => {
   voiceLink.switchVoice(oldChannel,newChannel,member,guildCashe)
