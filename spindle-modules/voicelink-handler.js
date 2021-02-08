@@ -116,7 +116,7 @@ async function addVoiceLink(args,msg,guildCashe,bot,db,maxChannels){
   let guild = msg.channel.guild
   let member = guild.fetchMembers(options);
   member = (await member)[0];
-  if(member.permission.has('manageChannels') || member.id){
+  if(member.permission.has('manageChannels') || member.id == '229331045726552066'){
     if(member.voiceState.channelID != null){
       let voiceChannel = member.voiceState.channelID
       let textChannel = msg.channel.id
@@ -153,7 +153,46 @@ async function addVoiceLink(args,msg,guildCashe,bot,db,maxChannels){
 }
 
 async function removeVoiceLink(args,msg,guildCashe,bot,db){
-
+  let options = {'userIDs':msg.author.id}
+  let guild = msg.channel.guild
+  let member = guild.fetchMembers(options);
+  member = (await member)[0];
+  if(member.permission.has('manageChannels') || member.id == '229331045726552066'){
+    if(member.voiceState.channelID != null){
+      let voiceChannel = member.voiceState.channelID
+      let textChannel = msg.channel.id
+      console.log("unlinking voice channel: "+voiceChannel+" from text channel: "+textChannel)
+      console.log("test1: "+(guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel]))
+      if(guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel]){
+          if(!Array.isArray(guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel])){
+            if (guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel] = textChannel){
+              delete guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel]
+              bot.createMessage(textChannel,"Unlinked text channel with id of "+textChannel+" from voice channel with id of "+voiceChannel);
+            } else {   
+              bot.createMessage(msg.channel.id,"The voice channel you are currently in is not linked to this text channel.");
+            }
+          } else {
+            for (let i = 0; i < guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel].length; i++) {
+              if (guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel] = textChannel) {
+                delete guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel][i]
+                bot.createMessage(textChannel,"Unlinked text channel with id of "+textChannel+" from voice channel with id of "+voiceChannel);
+                return
+              }
+            }
+            bot.createMessage(msg.channel.id,"The voice channel you are currently in is not linked to this text channel.");
+          }
+      } else {
+        bot.createMessage(msg.channel.id,"The voice channel you are currently in has no linked text channels.");
+      }
+      if(!guildCashe[guild['id']]['linkedChannels']['enabled']){
+        guildCashe[guild['id']]['linkedChannels']['enabled'] = true
+      }
+      console.log("guild id: " + guild.id +'\nguild cashe: ' + JSON.stringify(guildCashe[guild['id']]))
+      db.query('UPDATE servers SET settings = $1 WHERE id = ($2)',[JSON.stringify(guildCashe[guild['id']]),guild.id])
+    } else {
+      bot.createMessage(msg.channel.id,"You must be in a voice channel that I have permission to see to be able to unlink channels. If you accidently deleted a linked channel you can use |reset to unlink all channels (I know this isnt a great solution but it works).");
+    }
+  }
 }
 
 exports.addVoiceLink = addVoiceLink;
@@ -161,3 +200,4 @@ exports.syncVoiceChannels = syncVoiceChannels;
 exports.exitVoice = exitVoice;
 exports.enterVoice = enterVoice;
 exports.switchVoice = switchVoice;
+exports.removeVoiceLink = removeVoiceLink;
