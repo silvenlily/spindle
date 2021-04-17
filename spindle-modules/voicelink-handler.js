@@ -41,11 +41,13 @@ function switchVoice(oldChannel,newChannel,user,guildCashe){
       for (var i = 0; i < oldTextChannels.length; i++) {
         if(oldTextChannels[i] != "none"){
           oldTextChannels[i].deletePermission(user.id)
+          console.log(`Removed user ${user.id} from channel: ${oldTextChannels[i]}`)
         }
       }
     } else {
       if(oldTextChannels != "none"){
         oldTextChannels.deletePermission(user.id)
+        console.log(`Removed user ${user.id} from channel: ${oldTextChannels}`)
       }
     }
 
@@ -54,11 +56,13 @@ function switchVoice(oldChannel,newChannel,user,guildCashe){
       for (var i = 0; i < newTextChannels.length; i++) {
         if(newTextChannels[i] != "none"){
           newTextChannels[i].editPermission(user.id,1024,0,'member')
+          console.log(`Added user ${user.id} to channel: ${newTextChannels[i]}`)
         }
       }
     } else {
       if(newTextChannels != "none"){
         newTextChannels.editPermission(user.id,1024,0,'member')
+        console.log(`Added user ${user.id} to channel: ${newTextChannels}`)
       }
     }
   } else if(guildCashe[oldChannel['guild']['id']]['linkedChannels']['channels'][oldChannel['id']]){
@@ -83,9 +87,11 @@ function enterVoice(newChannel,user,guildCashe){
     if(Array.isArray(textChannels)){
       for (var i = 0; i < textChannels.length; i++) {
         textChannels[i].editPermission(user.id,1024,0,'member')
+        console.log(`Added user ${user.id} to channel: ${textChannels[i]}`)
       }
     } else {
       textChannels.editPermission(user.id,1024,0,'member')
+      console.log(`Added user ${user.id} to channel: ${textChannels}`)
     }
   }
 }
@@ -104,9 +110,11 @@ function exitVoice(oldChannel,user,guildCashe){
     if(Array.isArray(textChannels)){
       for (var i = 0; i < textChannels.length; i++) {
         textChannels[i].deletePermission(user.id)
+        console.log(`Removed user ${user.id} from channel: ${textChannels[i]}`)
       }
     } else {
       textChannels.deletePermission(user.id)
+      console.log(`Removed user ${user.id} from channel: ${textChannels}`)
     }
   }
 }
@@ -171,9 +179,9 @@ async function removeVoiceLink(args,msg,guildCashe,bot,db){
             } else {   
               bot.createMessage(msg.channel.id,"The voice channel you are currently in is not linked to this text channel.");
             }
-          } else {
+          } else { 
             for (let i = 0; i < guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel].length; i++) {
-              if (guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel] = textChannel) {
+              if (guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel] == textChannel) {
                 delete guildCashe[guild['id']]['linkedChannels']['channels'][voiceChannel][i]
                 bot.createMessage(textChannel,"Unlinked text channel with id of "+textChannel+" from voice channel with id of "+voiceChannel);
                 return
@@ -195,6 +203,27 @@ async function removeVoiceLink(args,msg,guildCashe,bot,db){
   }
 }
 
+async function resetChannel(bot,msg,args,guildCashe){
+  let options = {'userIDs':msg.author.id}
+  let guild = msg.channel.guild
+  let member = guild.fetchMembers(options);
+  member = (await member)[0];
+  if(member.permission.has('manageChannels') || member.id == '229331045726552066'){
+    if(args[1]){
+      if(guildCashe[guild['id']]['linkedChannels']['channels'][args[1]]){
+        bot.createMessage(msg.channel.id,`Reset voice channel with id: ${args[1]}`);
+      } else {
+        bot.createMessage(msg.channel.id,`Voice channel with id "${args[1]}" either does not exist or has no linked channels.`);
+      }
+    } else {
+      bot.createMessage(msg.channel.id,`Useage: |resetChannel [channelID], unlinks all text channels and resets the channel in the bots cache. Somtimes needed because safire is basicly a bunch of ducktape and superglue`);
+    }
+  }
+}
+
+
+
+exports.resetChannel = resetChannel;
 exports.addVoiceLink = addVoiceLink;
 exports.syncVoiceChannels = syncVoiceChannels;
 exports.exitVoice = exitVoice;
