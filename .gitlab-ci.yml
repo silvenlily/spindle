@@ -1,0 +1,6 @@
+image: node:latest
+
+test_build:
+  script:
+    - npm install
+    - npm run build
