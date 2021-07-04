@@ -1,5 +1,4 @@
 import eris from "eris";
-import pg from "pg";
 
 import loadConfig from "./libs/loadConf";
 import validators from "./libs/confValidators";
