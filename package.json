@@ -11,8 +11,9 @@
   },
   "main": "spindle.js",
   "scripts": {
-    "start": "npm run build && node build/spindle.js",
+    "start": "echo note: this runs spindle without building it, if you need to build it first use start:build && node build/spindle.js",
     "start:dev": "nodemon",
+    "start:build": "npm run build && npm run start",
     "build": "rimraf ./build && tsc"
   },
   "devDependencies": {

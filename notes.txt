@@ -1,0 +1,82 @@
+//dev notes:
+//(this is basicly my notepad, feel free to use it as such or ignore it)
+
+//guilds object scheme:
+{
+  <guildID>: {
+    guildid: guild id //basicly here as an artifact of how we store data in the database, not worth removing each time a guild is fetched
+    settings: guildSettings object
+    voiceChannels: voiceChannels object //see below
+  }
+}
+
+//guildSettings:
+{
+  prefix: string, //guilds prefix
+  
+}
+
+//voiceChannels dats schema:
+//all of a guilds voice channels
+{ 
+  <channelID>: {
+    channelLink: boolean, //is this channel linked with a text channel
+    enableDynamicText: boolean
+    dynamicTextChannel: string
+    dynamicTextChannelSettings: {}
+    linkedTextChannels: {
+      <channelID>: {
+        dynamic: boolean, //should this channel be automaticly deleted when the last person leaves
+        permissions: discord permissions object (stringified) //permissions for creating the channel
+      }
+    }
+  }
+}
+
+dynamicTextChannelSettings: {
+  name: string,
+  options: {
+    nsfw: boolean,
+    parentID: string,
+    permissionOverwrites: array<permissionOverwrites>,
+    rateLimitPerUser: number | undifined,
+    topic
+  }
+}
+
+
+
+
+{
+  "guildid": "743250557187129418",
+  "voicechannels": {
+    "861352547608166400": {
+      "channelLink": false,
+      "enableDynamicText": true,
+      "linkedTextChannels": {},
+      "dynamicTextChannelSettings": {
+        "name": "test1-text",
+        "options": {
+          "nsfw": false,
+          "parentID": null,
+          "permissionOverwrites": {
+            "229331045726552066": {
+              "id": "229331045726552066",
+              "createdAt": 1474747182066,
+              "allow": "1024",
+              "deny": "0",
+              "type": "member"
+            }
+          },
+          "rateLimitPerUser": 0,
+          "topic": "This channel will automaticly be created when the first person joins the corresponding channel and removed when the last person leaves."
+        }
+      },
+      "dynamicTextChannel": null
+    }
+  },
+  "textchannels": {},
+  "settings": {
+    "prefix": "="
+  }
+}

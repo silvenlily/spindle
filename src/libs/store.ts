@@ -1,27 +1,174 @@
 import pg from "pg";
 
-async function merge(base: any, changes: any) {
-  let changeKeys = Object.keys(changes);
-}
+const newGuild = {
+  guildid: "",
+  settings: {
+    prefix: "|",
+  },
+  voicechannels: {},
+  textchannels: {},
+};
 
 class store {
   guilds: any;
-  pg: pg.Client;
-  cacheAllGuilds: boolean;
-  constructor(pgURI: string, cacheAllGuilds?: boolean) {
-    if (cacheAllGuilds) {
-      this.cacheAllGuilds = cacheAllGuilds;
-    } else {
-      this.cacheAllGuilds = true;
-    }
-
-    this.pg = new pg.Client();
+  db: pg.Client;
+  finishedInit: boolean | Promise<boolean>;
+  constructor(pgURI: string) {
+    this.db = new pg.Client(pgURI);
+    this.guilds = {};
+    this.finishedInit = this.init();
   }
 
-  async fetchGuild(guildid: string) {}
-  async storeGuild(guildid: string, changes: any) {}
-  async fetchChannel(guildid: string, channelid: string) {}
-  async storeChannel(guildid: string, channelid: string, changes: any) {}
+  async init() {
+    //connect to postgres server or err
+    try {
+      console.log(`connecting to postgres server...`);
+      await this.db.connect();
+      console.log(`connected to postgres server!`);
+    } catch (error) {
+      console.log(
+        `Unable to connect to postgres server, likely manformed pg URI or pg server is down: \n${error}`
+      );
+      process.exit(1);
+    }
+
+    //create guilds tabe if it dosnt exist
+    await this.db.query(
+      "CREATE TABLE IF NOT EXISTS guilds (guildid VARCHAR(18) PRIMARY KEY, voicechannels JSON, textchannels JSON, settings JSON)",
+      []
+    );
+
+    //add all guilds to cache
+    let res = (await this.db.query("SELECT * FROM guilds")).rows;
+    res.forEach((guild) => {
+      this.guilds[guild.guildid] = guild;
+    });
+    console.log(`store finished init.`);
+    return true;
+  }
+
+  async fetchGuildSettings(guildid: string) {
+    let guild = await this.fetchGuild(guildid);
+    if (guild) {
+      return guild.settings;
+    } else {
+      return null;
+    }
+  }
+
+  async fetchGuildVoiceChannels(guildid: string) {
+    let guild = await this.fetchGuild(guildid);
+    if (guild) {
+      return guild.voicechannels;
+    } else {
+      return null;
+    }
+  }
+
+  async fetchVoiceChannel(guildid: string, channelid: string) {
+    let guild = await this.fetchGuild(guildid);
+
+    if (guild) {
+      if (guild.voicechannels[channelid]) {
+        return guild.voicechannels[channelid];
+      } else {
+        return null;
+      }
+    } else {
+      console.log(`d`);
+      return null;
+    }
+  }
+
+  async fetchGuild(guildid: string) {
+    if (this.guilds[guildid]) {
+      return this.guilds[guildid];
+    } else {
+      let guild = newGuild;
+      guild.guildid = guildid;
+      this.addGuild(guild);
+    }
+  }
+
+  async setDynamicVoiceChannel(guildID: string, voiceChannelID: string, textChannelID: string) {}
+
+  async storeGuildSettings(guildid: string, settings: any) {
+    let guild = await this.fetchGuild(guildid);
+
+    if (!guild) {
+      this.addGuild({ guildid: guildid });
+    } else {
+      this.guilds[guildid].settings = settings;
+      await this.db.query(`UPDATE guilds SET settings = $1 WHERE guildid = $2`, [
+        settings,
+        guildid,
+      ]);
+    }
+  }
+
+  async storeGuildVoiceChannels(guildid: string, channels: any) {
+    let guild = await this.fetchGuild(guildid);
+
+    if (!guild) {
+      guild = newGuild;
+      guild.guildid = guildid;
+      guild.voicechannels = channels;
+      this.addGuild(guild);
+    } else {
+      this.guilds[guildid].voicechannels = channels;
+      await this.db.query(`UPDATE guilds SET voicechannels = $1 WHERE guildid = $2`, [
+        this.guilds[guildid].voicechannels,
+        guildid,
+      ]);
+    }
+  }
+
+  async storeVoiceChannel(guildid: string, channelid: string, channel: any) {
+    let guild = await this.fetchGuild(guildid);
+
+    if (!guild) {
+      guild = newGuild;
+      guild.guildid = guildid;
+      guild.voicechannels[channelid] = channel;
+      await this.addGuild(guild);
+    } else {
+      this.guilds[guildid].voicechannels[channelid] = channel;
+      await this.db.query(`UPDATE guilds SET voicechannels = $1 WHERE guildid = $2`, [
+        this.guilds[guildid].voicechannels,
+        guildid,
+      ]);
+    }
+  }
+
+  async addGuild(guild: {
+    guildid: string;
+    voicechannels?: any;
+    textchannels?: any;
+    settings?: any;
+  }) {
+    if (!this.guilds[guild.guildid]) {
+      if (!guild.voicechannels) {
+        guild.voicechannels = newGuild.voicechannels;
+      }
+      if (!guild.textchannels) {
+        guild.textchannels = newGuild.textchannels;
+      }
+      if (!guild.settings) {
+        guild.settings = newGuild.settings;
+      }
+
+      this.db
+        .query(
+          `INSERT INTO guilds(guildid, voicechannels, textchannels, settings) VALUES($1, $2, $3, $4) RETURNING *`,
+          [guild.guildid, guild.voicechannels, guild.textchannels, guild.settings]
+        )
+        .then((res) => {
+          this.guilds[guild.guildid] = guild;
+          return res.rows[0];
+        });
+    }
+    return null;
+  }
 }
 
 export { store };

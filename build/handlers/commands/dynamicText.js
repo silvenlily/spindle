@@ -1,0 +1,70 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.toggleDynamicText = void 0;
+const newChannelSettings_1 = require("./newChannelSettings");
+async function disableDynamicText(msg, channel, member, bot, Store) {
+    if (member.voiceState.channelID) {
+        if (!channel) {
+            channel = newChannelSettings_1.newVoice;
+        }
+        channel.enableDynamicText = false;
+        Store.storeVoiceChannel(msg.guildID, member.voiceState.channelID, channel);
+        bot.createMessage(msg.channel.id, `Enabled dynamic voice for channel ${member.voiceState.channelID}.`);
+    }
+}
+async function enableDynamicText(msg, channel, member, bot, Store) {
+    if (member.voiceState.channelID) {
+        if (!channel) {
+            channel = newChannelSettings_1.newVoice;
+        }
+        if (!channel.dynamicTextChannelSettings) {
+            let voiceChannel = msg.channel.guild.channels.find((element) => {
+                if (element.id == member.voiceState.channelID) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            });
+            channel.dynamicTextChannelSettings = {
+                name: `${voiceChannel.name.replace(/ /g, "-")}-text`,
+                options: {
+                    permissionOverwrites: [],
+                    topic: "This channel will automaticly be created when the first person joins the corresponding channel and removed when the last person leaves.",
+                },
+            };
+            if (voiceChannel.parentID) {
+                channel.dynamicTextChannelSettings.parentID = voiceChannel.parentID;
+            }
+        }
+        channel.enableDynamicText = true;
+        Store.storeVoiceChannel(msg.guildID, member.voiceState.channelID, channel);
+        console.log(`enable : ${JSON.stringify(channel, null, 2)}`);
+        bot.createMessage(msg.channel.id, `Enabled dynamic voice for channel ${member.voiceState.channelID}.`);
+    }
+}
+async function toggleDynamicText(msg, bot, Store) {
+    let member = (await msg.channel.guild.fetchMembers({ userIDs: [msg.author.id] }))[0];
+    if (member.permissions.has(`manageGuild`)) {
+        if (member.voiceState && member.voiceState.channelID) {
+            let channel = await Store.fetchVoiceChannel(msg.guildID, member.voiceState.channelID);
+            if (!channel) {
+                channel = newChannelSettings_1.newVoice;
+            }
+            if (channel.enableDynamicText) {
+                disableDynamicText(msg, channel, member, bot, Store);
+            }
+            else {
+                enableDynamicText(msg, channel, member, bot, Store);
+            }
+        }
+        else {
+            bot.createMessage(msg.channel.id, `You must be in the voice channel you want to enable dynamic text for, and the bot must be able to see that channel.`);
+        }
+    }
+    else {
+        bot.createMessage(msg.channel.id, `You don't have permssion to do this, you need \`Manage Server\`.`);
+    }
+}
+exports.toggleDynamicText = toggleDynamicText;
+exports.default = toggleDynamicText;

@@ -2,38 +2,54 @@ import eris from "eris";
 
 import loadConfig from "./libs/loadConf";
 import validators from "./libs/confValidators";
-import StoreLib from "./libs/store";
+import StoreLib, { store } from "./libs/store";
 
 import messageHandler from "./handlers/messageHandler";
-import voiceHandlerLib from "./handlers/voiceHandler";
+import voiceHandler from "./handlers/voiceHandler";
 
 let tokens: any = loadConfig(`./config/tokens.json`, validators.tokens);
 let config: any = loadConfig(`./config/config.json`, validators.config);
-
-let voiceHandler = new voiceHandlerLib(config);
 
 let Store = new StoreLib(tokens.pg);
 
 let bot = eris(tokens.discord);
 
-bot.on("ready", () => {
+bot.on("ready", async () => {
+  Store.finishedInit = await Store.finishedInit;
+  bot.guilds.forEach((guild) => {
+    if (!Store.guilds[guild.id]) {
+      Store.addGuild({ guildid: guild.id });
+      console.log(`Loaded new guild: ${guild.name}`);
+    } else {
+      console.log(`Loaded guild: ${guild.name}`);
+    }
+  });
+
   console.log("ready!");
 });
 
+bot.on("guildCreate", async (guild) => {
+  console.log(`ng: ${guild.name}`);
+  if (!(await Store.fetchGuild(guild.id))) {
+    console.log(`Loaded new guild: ${guild.name}`);
+    Store.addGuild({ guildid: guild.id });
+  }
+});
+
 bot.on("messageCreate", (msg) => {
-  messageHandler(msg, bot);
+  messageHandler(msg, bot, Store);
 });
 
 bot.on("voiceChannelJoin", (member, channel) => {
-  voiceHandler.voiceJoinHandler(member, channel);
+  voiceHandler.voiceJoinHandler(member, channel, Store);
 });
 
 bot.on("voiceChannelLeave", (member, channel) => {
-  voiceHandler.voiceLeaveHandler(member, channel);
+  voiceHandler.voiceLeaveHandler(member, channel, Store);
 });
 
 bot.on("voiceChannelSwitch", (member, newChannel, oldChannel) => {
-  voiceHandler.voiceSwitchHandler(member, oldChannel, newChannel);
+  voiceHandler.voiceSwitchHandler(member, oldChannel, newChannel, Store);
 });
 
 bot.connect();
