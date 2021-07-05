@@ -111,6 +111,7 @@ class store {
         }
     }
     async storeVoiceChannel(guildid, channelid, channel) {
+        console.log(`storeVoiceChannel`);
         let guild = await this.fetchGuild(guildid);
         if (!guild) {
             guild = newGuild;
@@ -127,6 +128,7 @@ class store {
         }
     }
     async addGuild(guild) {
+        console.log(`addGuild`);
         if (!this.guilds[guild.guildid]) {
             if (!guild.voicechannels) {
                 guild.voicechannels = newGuild.voicechannels;
@@ -137,12 +139,8 @@ class store {
             if (!guild.settings) {
                 guild.settings = newGuild.settings;
             }
-            this.db
-                .query(`INSERT INTO guilds(guildid, voicechannels, textchannels, settings) VALUES($1, $2, $3, $4) RETURNING *`, [guild.guildid, guild.voicechannels, guild.textchannels, guild.settings])
-                .then((res) => {
-                this.guilds[guild.guildid] = guild;
-                return res.rows[0];
-            });
+            this.guilds[guild.guildid] = guild;
+            this.db.query(`INSERT INTO guilds(guildid, voicechannels, textchannels, settings) VALUES($1, $2, $3, $4) RETURNING *`, [guild.guildid, guild.voicechannels, guild.textchannels, guild.settings]);
         }
         return null;
     }

@@ -7,7 +7,6 @@ async function userJoin(
   channelSettings: any,
   Store: store
 ) {
-  console.log(`asdfasdf`);
   let textChannel: eris.TextChannel | undefined;
   if (channelSettings.dynamicTextChannel) {
     textChannel = channel.guild.channels.find((channel) => {
@@ -19,10 +18,8 @@ async function userJoin(
     }) as eris.TextChannel;
   }
   if (textChannel) {
-    console.log(`add member to dynamic channel ${textChannel.name}`);
     textChannel.editPermission(member.id, 1024, 0, "member");
   } else {
-    console.log("createDyamicChannel");
     let txt = await channel.guild.createChannel(
       channelSettings.dynamicTextChannelSettings.name,
       0,
@@ -50,8 +47,6 @@ async function userLeave(
   }) as eris.TextChannel;
   if (textChannel) {
     if (channel.voiceMembers.size == 0) {
-      console.log(`destroy dyamic channel: ${textChannel.name}`);
-
       channelSettings.dynamicTextChannelSettings = {
         name: textChannel.name,
         options: {
@@ -73,7 +68,6 @@ async function userLeave(
       await textChannel.deletePermission(member.id);
       await textChannel.delete();
     } else {
-      console.log(`remove user from dynamic channel: ${textChannel.name}`);
       textChannel.deletePermission(member.id);
     }
   }

@@ -9,9 +9,8 @@ async function handleVoiceExit(member: eris.Member, channel: eris.AnyVoiceChanne
     if (channelSettings.channelLink) {
       channelLink.removeChannel(member, channel, channelSettings);
     }
-    console.log(`a`);
+
     if (channelSettings.enableDynamicText) {
-      console.log(`b`);
       dynamicText.userLeave(member, channel, channelSettings, Store);
     }
   }

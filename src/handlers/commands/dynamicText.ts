@@ -16,9 +16,10 @@ async function disableDynamicText(
 
     channel.enableDynamicText = false;
     Store.storeVoiceChannel(msg.guildID, member.voiceState.channelID, channel);
+
     bot.createMessage(
       msg.channel.id,
-      `Enabled dynamic voice for channel ${member.voiceState.channelID}.`
+      `Disabled dynamic voice for channel ${member.voiceState.channelID}.`
     );
   }
 }
@@ -30,10 +31,13 @@ async function enableDynamicText(
   bot: eris.Client,
   Store: store
 ) {
+  console.log(``);
   if (member.voiceState.channelID) {
     if (!channel) {
       channel = newVoice;
     }
+
+    channel.enableDynamicText = true;
 
     if (!channel.dynamicTextChannelSettings) {
       let voiceChannel: eris.VoiceChannel = msg.channel.guild.channels.find((element: any) => {
@@ -59,7 +63,7 @@ async function enableDynamicText(
 
     channel.enableDynamicText = true;
     Store.storeVoiceChannel(msg.guildID, member.voiceState.channelID, channel);
-    console.log(`enable : ${JSON.stringify(channel, null, 2)}`);
+
     bot.createMessage(
       msg.channel.id,
       `Enabled dynamic voice for channel ${member.voiceState.channelID}.`
@@ -73,8 +77,9 @@ async function toggleDynamicText(msg: any, bot: eris.Client, Store: store) {
     if (member.voiceState && member.voiceState.channelID) {
       let channel = await Store.fetchVoiceChannel(msg.guildID, member.voiceState.channelID);
 
-      if (!channel) {
-        channel = newVoice;
+      if (channel == null) {
+        enableDynamicText(msg, channel, member, bot, Store);
+        return;
       }
 
       if (channel.enableDynamicText) {

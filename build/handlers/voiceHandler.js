@@ -12,9 +12,7 @@ async function handleVoiceExit(member, channel, Store) {
         if (channelSettings.channelLink) {
             channelLink_1.default.removeChannel(member, channel, channelSettings);
         }
-        console.log(`a`);
         if (channelSettings.enableDynamicText) {
-            console.log(`b`);
             dynamicText_1.default.userLeave(member, channel, channelSettings, Store);
         }
     }

@@ -9,14 +9,16 @@ async function disableDynamicText(msg, channel, member, bot, Store) {
         }
         channel.enableDynamicText = false;
         Store.storeVoiceChannel(msg.guildID, member.voiceState.channelID, channel);
-        bot.createMessage(msg.channel.id, `Enabled dynamic voice for channel ${member.voiceState.channelID}.`);
+        bot.createMessage(msg.channel.id, `Disabled dynamic voice for channel ${member.voiceState.channelID}.`);
     }
 }
 async function enableDynamicText(msg, channel, member, bot, Store) {
+    console.log(``);
     if (member.voiceState.channelID) {
         if (!channel) {
             channel = newChannelSettings_1.newVoice;
         }
+        channel.enableDynamicText = true;
         if (!channel.dynamicTextChannelSettings) {
             let voiceChannel = msg.channel.guild.channels.find((element) => {
                 if (element.id == member.voiceState.channelID) {
@@ -39,7 +41,6 @@ async function enableDynamicText(msg, channel, member, bot, Store) {
         }
         channel.enableDynamicText = true;
         Store.storeVoiceChannel(msg.guildID, member.voiceState.channelID, channel);
-        console.log(`enable : ${JSON.stringify(channel, null, 2)}`);
         bot.createMessage(msg.channel.id, `Enabled dynamic voice for channel ${member.voiceState.channelID}.`);
     }
 }
@@ -48,8 +49,9 @@ async function toggleDynamicText(msg, bot, Store) {
     if (member.permissions.has(`manageGuild`)) {
         if (member.voiceState && member.voiceState.channelID) {
             let channel = await Store.fetchVoiceChannel(msg.guildID, member.voiceState.channelID);
-            if (!channel) {
-                channel = newChannelSettings_1.newVoice;
+            if (channel == null) {
+                enableDynamicText(msg, channel, member, bot, Store);
+                return;
             }
             if (channel.enableDynamicText) {
                 disableDynamicText(msg, channel, member, bot, Store);

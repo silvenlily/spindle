@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 async function userJoin(member, channel, channelSettings, Store) {
-    console.log(`asdfasdf`);
     let textChannel;
     if (channelSettings.dynamicTextChannel) {
         textChannel = channel.guild.channels.find((channel) => {
@@ -14,11 +13,9 @@ async function userJoin(member, channel, channelSettings, Store) {
         });
     }
     if (textChannel) {
-        console.log(`add member to dynamic channel ${textChannel.name}`);
         textChannel.editPermission(member.id, 1024, 0, "member");
     }
     else {
-        console.log("createDyamicChannel");
         let txt = await channel.guild.createChannel(channelSettings.dynamicTextChannelSettings.name, 0, channelSettings.dynamicTextChannelSettings.options);
         channelSettings.dynamicTextChannel = txt.id;
         txt.editPermission(member.id, 1024, 0, "member");
@@ -35,7 +32,6 @@ async function userLeave(member, channel, channelSettings, Store) {
     });
     if (textChannel) {
         if (channel.voiceMembers.size == 0) {
-            console.log(`destroy dyamic channel: ${textChannel.name}`);
             channelSettings.dynamicTextChannelSettings = {
                 name: textChannel.name,
                 options: {
@@ -56,7 +52,6 @@ async function userLeave(member, channel, channelSettings, Store) {
             await textChannel.delete();
         }
         else {
-            console.log(`remove user from dynamic channel: ${textChannel.name}`);
             textChannel.deletePermission(member.id);
         }
     }
