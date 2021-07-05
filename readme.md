@@ -2,7 +2,6 @@ Spindle is a discord bot used to manage channels. It allows you to link text cha
 
 If you dont want to give spindle Admin for your entire server you can give it Manage Permissions for each text channel you link.
 
-NOTE: working branch is a complete re-write of spindle, it is still being worked on, **use master**.
 
 You can add the bot to your server using: https://discord.com/oauth2/authorize?client_id=768705571481452545&scope=bot&permissions=19472 and join the development server at: https://discord.gg/4ufepDPkPy
 
