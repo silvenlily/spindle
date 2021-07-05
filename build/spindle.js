@@ -24,6 +24,7 @@ bot.on("ready", async () => {
             console.log(`Loaded guild: ${guild.name}`);
         }
     });
+    bot.editStatus(`online`, { name: `|help - now V2!`, type: 2 });
     console.log("ready!");
 });
 bot.on("guildCreate", async (guild) => {

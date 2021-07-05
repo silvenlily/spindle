@@ -25,6 +25,8 @@ bot.on("ready", async () => {
     }
   });
 
+  bot.editStatus(`online`, { name: `|help - now V2!`, type: 2 });
+
   console.log("ready!");
 });
 
