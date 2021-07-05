@@ -1,4 +1,4 @@
-Spindle is a discord bot used to manage channels. It allows you to link text channels and voice channels, so users can only view a text channel when they are in the linked voice channel.
+Spindle is a discord bot used to manage channels. It allows you to link text channels and voice channels, so users can only view a text channel when they are in the linked voice channel. It can also automaticly create a text channel when someone joins a voice channel, and delete it when everyone leaves.
 
 You can add offical instance of the bot to your server using: https://discord.com/oauth2/authorize?client_id=768705571481452545&scope=bot&permissions=19472 and join the development server at: https://discord.gg/4ufepDPkPy
 
