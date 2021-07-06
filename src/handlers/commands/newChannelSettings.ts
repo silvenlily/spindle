@@ -1,7 +1,7 @@
 const newVoice = {
   channelLink: false,
-  enableDynamicText: true,
+  enableDynamicText: false,
   linkedTextChannels: {},
 };
 
-export { newVoice };
+//export { newVoice };
