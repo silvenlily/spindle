@@ -6,13 +6,11 @@ import dynamicText from "./voiceHandlers/dynamicText";
 async function handleVoiceExit(member: eris.Member, channel: eris.AnyVoiceChannel, Store: store) {
   let channelSettings = await Store.fetchVoiceChannel(channel.guild.id, channel.id);
   if (channelSettings) {
-    console.log(`ch settings lv: ${JSON.stringify(Store.guilds)}`);
     if (channelSettings.channelLink) {
       channelLink.removeChannel(member, channel, channelSettings);
     }
 
     if (channelSettings.enableDynamicText) {
-      console.log(`user left dynamic channel: ${channelSettings}`);
       dynamicText.userLeave(member, channel, channelSettings, Store);
     }
   }
@@ -21,7 +19,6 @@ async function handleVoiceExit(member: eris.Member, channel: eris.AnyVoiceChanne
 async function handleVoiceEnter(member: eris.Member, channel: eris.AnyVoiceChannel, Store: store) {
   let channelSettings = await Store.fetchVoiceChannel(channel.guild.id, channel.id);
   if (channelSettings) {
-    //console.log(`ch settings en: ${JSON.stringify(Store.guilds)}`);
     if (channelSettings.channelLink) {
       channelLink.addChannel(member, channel, channelSettings);
     }

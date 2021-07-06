@@ -14,10 +14,11 @@ const newGuild = {
     textchannels: {},
 };
 class store {
-    constructor(pgURI) {
+    constructor(pgURI, config) {
         this.db = new pg_1.default.Client(pgURI);
         this.guilds = {};
         this.finishedInit = this.init();
+        this.config = config;
     }
     async init() {
         try {
@@ -138,6 +139,7 @@ class store {
             if (!guild.settings) {
                 guild.settings = newGuild.settings;
             }
+            guild.settings.prefix = this.config.prefix;
             this.guilds[guild.guildid] = guild;
             this.db.query(`INSERT INTO guilds(guildid, voicechannels, textchannels, settings) VALUES($1, $2, $3, $4) RETURNING *`, [guild.guildid, guild.voicechannels, guild.textchannels, guild.settings]);
         }

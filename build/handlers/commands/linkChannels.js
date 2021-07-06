@@ -6,14 +6,12 @@ async function linkChannels(msg, bot, Store) {
     if (member.permissions.has(`manageGuild`)) {
         if (member.voiceState && member.voiceState.channelID) {
             let channel = await Store.fetchVoiceChannel(msg.guildID, member.voiceState.channelID);
-            console.log(`loaded voice channel: ${JSON.stringify(channel)}`);
             if (!channel) {
                 channel = {
                     channelLink: false,
                     enableDynamicText: false,
                     linkedTextChannels: {},
                 };
-                console.log(`newVoice: ${JSON.stringify(channel)}`);
             }
             if (channel.linkedTextChannels[msg.channel.id]) {
                 bot.createMessage(msg.channel.id, "These channels are already linked. You can unlink them with |unlink.");
@@ -21,7 +19,6 @@ async function linkChannels(msg, bot, Store) {
             }
             channel.channelLink = true;
             channel.linkedTextChannels[msg.channel.id] = Math.random();
-            console.log(`saving voice channel: ${JSON.stringify(channel)}`);
             Store.storeVoiceChannel(msg.guildID, member.voiceState.channelID, channel);
             bot.createMessage(msg.channel.id, `Linked voice channel ${member.voiceState.channelID} to <#${msg.channel.id}>.`);
         }

@@ -10,7 +10,7 @@ import voiceHandler from "./handlers/voiceHandler";
 let tokens: any = loadConfig(`./config/tokens.json`, validators.tokens);
 let config: any = loadConfig(`./config/config.json`, validators.config);
 
-let Store = new StoreLib(tokens.pg);
+let Store = new StoreLib(tokens.pg, config);
 
 let bot = eris(tokens.discord);
 

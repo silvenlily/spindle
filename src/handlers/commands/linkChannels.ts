@@ -8,15 +8,12 @@ async function linkChannels(msg: any, bot: eris.Client, Store: store) {
     if (member.voiceState && member.voiceState.channelID) {
       let channel = await Store.fetchVoiceChannel(msg.guildID, member.voiceState.channelID);
 
-      console.log(`loaded voice channel: ${JSON.stringify(channel)}`);
-
       if (!channel) {
         channel = {
           channelLink: false,
           enableDynamicText: false,
           linkedTextChannels: {},
         };
-        console.log(`newVoice: ${JSON.stringify(channel)}`);
       }
 
       if (channel.linkedTextChannels[msg.channel.id]) {
@@ -29,8 +26,6 @@ async function linkChannels(msg: any, bot: eris.Client, Store: store) {
 
       channel.channelLink = true;
       channel.linkedTextChannels[msg.channel.id] = Math.random();
-
-      console.log(`saving voice channel: ${JSON.stringify(channel)}`);
 
       Store.storeVoiceChannel(msg.guildID, member.voiceState.channelID, channel);
       bot.createMessage(

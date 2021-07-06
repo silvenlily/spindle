@@ -20,10 +20,12 @@ class store {
   guilds: any;
   db: pg.Client;
   finishedInit: boolean | Promise<boolean>;
-  constructor(pgURI: string) {
+  config: any;
+  constructor(pgURI: string, config: any) {
     this.db = new pg.Client(pgURI);
     this.guilds = {};
     this.finishedInit = this.init();
+    this.config = config;
   }
 
   async init() {
@@ -167,6 +169,8 @@ class store {
       if (!guild.settings) {
         guild.settings = newGuild.settings;
       }
+
+      guild.settings.prefix = this.config.prefix;
 
       this.guilds[guild.guildid] = guild;
       this.db.query(
