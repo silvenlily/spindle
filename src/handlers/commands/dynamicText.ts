@@ -1,6 +1,6 @@
 import type eris from "eris";
 import type store from "../../libs/store";
-import { newVoice } from "./newChannelSettings";
+//import { newVoice } from "./newChannelSettings";
 
 async function disableDynamicText(
   msg: any,
@@ -11,7 +11,11 @@ async function disableDynamicText(
 ) {
   if (member.voiceState.channelID) {
     if (!channel) {
-      channel = newVoice;
+      channel = {
+        channelLink: false,
+        enableDynamicText: false,
+        linkedTextChannels: {},
+      };
     }
 
     channel.enableDynamicText = false;
@@ -34,7 +38,11 @@ async function enableDynamicText(
   console.log(``);
   if (member.voiceState.channelID) {
     if (!channel) {
-      channel = newVoice;
+      channel = {
+        channelLink: false,
+        enableDynamicText: false,
+        linkedTextChannels: {},
+      };
     }
 
     channel.enableDynamicText = true;

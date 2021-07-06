@@ -1,6 +1,6 @@
 import type eris from "eris";
 import type store from "../../libs/store";
-import { newVoice } from "./newChannelSettings";
+//import { newVoice } from "./newChannelSettings";
 
 async function linkChannels(msg: any, bot: eris.Client, Store: store) {
   let member: eris.Member = (await msg.channel.guild.fetchMembers({ userIDs: [msg.author.id] }))[0];
@@ -8,8 +8,15 @@ async function linkChannels(msg: any, bot: eris.Client, Store: store) {
     if (member.voiceState && member.voiceState.channelID) {
       let channel = await Store.fetchVoiceChannel(msg.guildID, member.voiceState.channelID);
 
+      console.log(`loaded voice channel: ${JSON.stringify(channel)}`);
+
       if (!channel) {
-        channel = newVoice;
+        channel = {
+          channelLink: false,
+          enableDynamicText: false,
+          linkedTextChannels: {},
+        };
+        console.log(`newVoice: ${JSON.stringify(channel)}`);
       }
 
       if (channel.linkedTextChannels[msg.channel.id]) {
@@ -20,7 +27,11 @@ async function linkChannels(msg: any, bot: eris.Client, Store: store) {
         return;
       }
 
-      channel.linkedTextChannels[msg.channel.id] = { dynamic: false };
+      channel.channelLink = true;
+      channel.linkedTextChannels[msg.channel.id] = Math.random();
+
+      console.log(`saving voice channel: ${JSON.stringify(channel)}`);
+
       Store.storeVoiceChannel(msg.guildID, member.voiceState.channelID, channel);
       bot.createMessage(
         msg.channel.id,

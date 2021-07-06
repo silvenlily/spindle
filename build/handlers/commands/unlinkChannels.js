@@ -11,10 +11,10 @@ async function unlinkChannels(msg, bot, Store) {
                 return;
             }
             delete channel.linkedTextChannels[msg.channel.id];
-            if ((Object.keys(channel.linkedTextChannels).length = 0)) {
-                let voiceChannels = await Store.fetchGuildVoiceChannels(msg.guildID);
-                delete voiceChannels[member.voiceState.channelID];
-                Store.storeGuildVoiceChannels(msg.guildID, voiceChannels);
+            if (Object.keys(channel.linkedTextChannels).length == 0) {
+                let voiceChannel = await Store.fetchVoiceChannel(msg.guildID, msg.guildID);
+                channel.channelLink = false;
+                Store.storeVoiceChannel(msg.guildID, msg.guildID, voiceChannel);
             }
             Store.storeVoiceChannel(msg.guildID, member.voiceState.channelID, channel);
             bot.createMessage(msg.channel.id, `Unlinked voice channel ${member.voiceState.channelID} from <#${msg.channel.id}>.`);

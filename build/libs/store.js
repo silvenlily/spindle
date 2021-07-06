@@ -66,7 +66,7 @@ class store {
             }
         }
         else {
-            console.log(`d`);
+            this.addGuild({ guildid: guildid });
             return null;
         }
     }
@@ -111,15 +111,14 @@ class store {
         }
     }
     async storeVoiceChannel(guildid, channelid, channel) {
-        console.log(`storeVoiceChannel`);
-        let guild = await this.fetchGuild(guildid);
-        if (!guild) {
-            guild = newGuild;
+        if (!this.guilds[guildid]) {
+            let guild = newGuild;
             guild.guildid = guildid;
             guild.voicechannels[channelid] = channel;
             await this.addGuild(guild);
         }
         else {
+            console.log(`storeVoiceChannel: ${channelid} : ${channel.id} :\n ${JSON.stringify(this.guilds[guildid].voicechannels)}`);
             this.guilds[guildid].voicechannels[channelid] = channel;
             await this.db.query(`UPDATE guilds SET voicechannels = $1 WHERE guildid = $2`, [
                 this.guilds[guildid].voicechannels,

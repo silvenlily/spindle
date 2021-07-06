@@ -1,11 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.toggleDynamicText = void 0;
-const newChannelSettings_1 = require("./newChannelSettings");
 async function disableDynamicText(msg, channel, member, bot, Store) {
     if (member.voiceState.channelID) {
         if (!channel) {
-            channel = newChannelSettings_1.newVoice;
+            channel = {
+                channelLink: false,
+                enableDynamicText: false,
+                linkedTextChannels: {},
+            };
         }
         channel.enableDynamicText = false;
         Store.storeVoiceChannel(msg.guildID, member.voiceState.channelID, channel);
@@ -16,7 +19,11 @@ async function enableDynamicText(msg, channel, member, bot, Store) {
     console.log(``);
     if (member.voiceState.channelID) {
         if (!channel) {
-            channel = newChannelSettings_1.newVoice;
+            channel = {
+                channelLink: false,
+                enableDynamicText: false,
+                linkedTextChannels: {},
+            };
         }
         channel.enableDynamicText = true;
         if (!channel.dynamicTextChannelSettings) {
