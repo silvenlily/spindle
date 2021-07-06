@@ -9,12 +9,10 @@ const dynamicText_1 = __importDefault(require("./voiceHandlers/dynamicText"));
 async function handleVoiceExit(member, channel, Store) {
     let channelSettings = await Store.fetchVoiceChannel(channel.guild.id, channel.id);
     if (channelSettings) {
-        console.log(`ch settings lv: ${JSON.stringify(Store.guilds)}`);
         if (channelSettings.channelLink) {
             channelLink_1.default.removeChannel(member, channel, channelSettings);
         }
         if (channelSettings.enableDynamicText) {
-            console.log(`user left dynamic channel: ${channelSettings}`);
             dynamicText_1.default.userLeave(member, channel, channelSettings, Store);
         }
     }

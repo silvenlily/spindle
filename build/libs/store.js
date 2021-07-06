@@ -119,7 +119,6 @@ class store {
             await this.addGuild(guild);
         }
         else {
-            console.log(`storeVoiceChannel: ${channelid} : ${channel.id} :\n ${JSON.stringify(this.guilds[guildid].voicechannels)}`);
             this.guilds[guildid].voicechannels[channelid] = channel;
             await this.db.query(`UPDATE guilds SET voicechannels = $1 WHERE guildid = $2`, [
                 this.guilds[guildid].voicechannels,
@@ -128,7 +127,6 @@ class store {
         }
     }
     async addGuild(guild) {
-        console.log(`addGuild`);
         if (!this.guilds[guild.guildid]) {
             if (!guild.voicechannels) {
                 guild.voicechannels = newGuild.voicechannels;
