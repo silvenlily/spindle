@@ -1,3 +1,7 @@
+
+**SPINDLE V1 IS DEAD, USE SPINDLE V2**
+(just switch to the spindle-v2 branch)
+
 Spindle is a discord bot used to manage channels. It allows you to link text channels and voice channels, so users can only view a text channel when they are in the linked voice channel.
 
 If you dont want to give spindle Admin for your entire server you can give it Manage Permissions for each text channel you link.
