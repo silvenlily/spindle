@@ -1,6 +1,6 @@
 Spindle is a discord bot used to manage channels. It allows you to link text channels and voice channels, so users can only view a text channel when they are in the linked voice channel. It can also automaticly create a text channel when someone joins a voice channel, and delete it when everyone leaves.
 
-You can add offical instance of the bot to your server using: https://discord.com/oauth2/authorize?client_id=768705571481452545&scope=bot&permissions=19472 and join the development server at: https://discord.gg/4ufepDPkPy
+You can add offical instance of the bot to your server using: https://discord.com/api/oauth2/authorize?client_id=768705571481452545&permissions=8&scope=bot and join the development server at: https://discord.gg/4ufepDPkPy
 
 Selfhosting:  
 This section is *only* if you want to host your own instance of the bot, if you just want to use the offical version you don't need to do this. 
