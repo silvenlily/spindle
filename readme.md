@@ -1,3 +1,7 @@
+
+depreciation notice:
+Discord has now added built in vc-text channels, the official instance of spindle has been offlined and this repo is now archived as I don't see a reason for it to exist when the feature it created now comes with discord by default.
+
 Spindle is a discord bot used to manage channels. It allows you to link text channels and voice channels, so users can only view a text channel when they are in the linked voice channel. It can also automaticly create a text channel when someone joins a voice channel, and delete it when everyone leaves.
 
 You can add offical instance of the bot to your server using: https://discord.com/api/oauth2/authorize?client_id=768705571481452545&permissions=8&scope=bot and join the development server at: https://discord.gg/4ufepDPkPy
